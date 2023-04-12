@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+import { ArtistPage, User } from "@prisma/client";
 
 export type ArtistCard = {
   _id: String;
@@ -12,6 +12,8 @@ export type ArtistCard = {
 };
 
 export type SignInParams = Pick<User, "email" | "password">;
+
+export type CreateArtistParams = Omit<ArtistPage, "id" | "ratings" | "bookedDates">
 
 export type SignInResult = {
   user: Pick<User, "id" | "email">;

@@ -40,6 +40,10 @@ model ArtistPage {
   description  String
   bookedDates  DateTime[]
   pictures     String[]
+  youtubeUrl   String?
+  spotifyUrl   String?
+  instagramUrl  String?
+  soundCloudUrl String?
   location     Location
   allowedArea  Int
   genre        Genre

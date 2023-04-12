@@ -23,11 +23,13 @@ async function signIn(params: SignInParams): Promise<SignInResult> {
 }
 
 async function getUserOrFail(email: string): Promise<GetUserOrFailResult> {
-  const user = userRepository.findByEmail(email, {
+  const user = await userRepository.findByEmail(email, {
     id: true,
     email: true,
     password: true,
+    hasArtistPage: true,
   });
+  console.log(user);
   if (!user) throw invalidCredentialsError();
 
   return user;
@@ -45,7 +47,7 @@ async function createSession(userId: string) {
   return token;
 }
 
-type GetUserOrFailResult = Pick<User, "id" | "email" | "password">;
+type GetUserOrFailResult = Pick<User, "id" | "email" | "password" | "hasArtistPage">;
 
 const authenticationService = {
   signIn,

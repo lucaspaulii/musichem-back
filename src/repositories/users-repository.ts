@@ -40,10 +40,22 @@ async function create(params: CreateUserParams) {
   });
 }
 
+async function updateHasArtist(id: string) {
+  return await prisma.user.update({
+    data: {
+      hasArtistPage: true,
+    },
+    where: {
+      id,
+    },
+  });
+}
+
 const userRepository = {
   findByEmail,
   findById,
   create,
+  updateHasArtist,
 };
 
 export default userRepository;

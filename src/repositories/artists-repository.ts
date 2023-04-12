@@ -1,5 +1,5 @@
 import { prisma } from "@/database";
-import { ArtistCard } from "@/utils/types";
+import { ArtistCard, CreateArtistParams } from "@/utils/types";
 import { ArtistPage } from "@prisma/client";
 
 async function findNearestLimited(
@@ -103,7 +103,7 @@ async function findNearestFiltered(
   lng: number,
   type: string,
   genre: string
-) : Promise<ArtistCard[]> {
+): Promise<ArtistCard[]> {
   const nearest = (await prisma.artistPage.aggregateRaw({
     pipeline: [
       {
@@ -167,7 +167,7 @@ async function findNearestFiltered(
   return nearest as ArtistCard[];
 }
 
-async function findById(id: string) : Promise<ArtistPage> {
+async function findById(id: string): Promise<ArtistPage> {
   const artist = await prisma.artistPage.findUnique({
     where: {
       id,
@@ -176,11 +176,22 @@ async function findById(id: string) : Promise<ArtistPage> {
   return artist;
 }
 
+async function create(data: CreateArtistParams) {
+  return await prisma.artistPage.create({
+    data: {
+      ...data,
+      bookedDates: [],
+      ratings: [],
+    },
+  });
+}
+
 const artistsRepository = {
   findNearestLimited,
   findNearestUnlimited,
   findNearestFiltered,
   findById,
+  create,
 };
 
 export default artistsRepository;
