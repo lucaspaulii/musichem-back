@@ -7,6 +7,7 @@ import {
   artistsRouter,
   authenticationRouter,
   usersRouter,
+  bookingsRouter
 } from "@/routers";
 
 const app = express();
@@ -17,7 +18,8 @@ app
   .use("/genres", genresRouter)
   .use("/artists", artistsRouter)
   .use("/auth", authenticationRouter)
-  .use("/user", usersRouter);
+  .use("/user", usersRouter)
+  .use("/booking", bookingsRouter);
 
 export function init(): Promise<Express> {
   connectDB();

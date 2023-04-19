@@ -1,4 +1,4 @@
-import { ArtistPage, User } from "@prisma/client";
+import { ArtistPage, Booking, User } from "@prisma/client";
 
 export type ArtistCard = {
   _id: String;
@@ -30,3 +30,7 @@ export type CreateUserParams = Pick<
   | "pictures"
   | "description"
 >;
+
+export type CreateBookingParams = Pick<Booking, "artistPageId" | "date">;
+
+export type BookingServiceParams = Pick<Booking, "artistPageId" | "date" | "userId">

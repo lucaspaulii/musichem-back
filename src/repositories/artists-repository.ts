@@ -176,6 +176,15 @@ async function findById(id: string): Promise<ArtistPage> {
   return artist;
 }
 
+async function findByUserId(userId: string): Promise<ArtistPage> {
+  const artist = await prisma.artistPage.findUnique({
+    where: {
+      userId,
+    },
+  });
+  return artist;
+}
+
 async function create(data: CreateArtistParams) {
   return await prisma.artistPage.create({
     data: {
@@ -186,12 +195,34 @@ async function create(data: CreateArtistParams) {
   });
 }
 
+async function deleteArtist(artistId: string) {
+  return await prisma.artistPage.delete({
+    where: {
+      id: artistId,
+    },
+  });
+}
+
+async function updateBookedDates(artistId: string, bookedDates: Date[]) {
+  return await prisma.artistPage.update({
+    data: {
+      bookedDates
+    },
+    where: {
+      id: artistId
+    }
+  })
+}
+
 const artistsRepository = {
   findNearestLimited,
   findNearestUnlimited,
   findNearestFiltered,
   findById,
+  findByUserId,
   create,
+  deleteArtist,
+  updateBookedDates
 };
 
 export default artistsRepository;

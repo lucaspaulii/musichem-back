@@ -59,6 +59,8 @@ model Booking {
   userId       String @db.ObjectId
   artistPageId String @db.ObjectId
   date         DateTime
+  accepted     Boolean @default(false)
+  paid         Boolean @default(false)
   artistPage   ArtistPage @relation(fields: [artistPageId], references: [id])
   user         User       @relation(fields: [userId], references: [id])
 

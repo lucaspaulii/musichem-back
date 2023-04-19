@@ -1,5 +1,6 @@
 import { badRequestError } from "@/errors/bad-request-error";
 import { notFoundError } from "@/errors/not-found-error";
+import { unauthorizedError } from "@/errors/unauthorized-error";
 import artistsRepository from "@/repositories/artists-repository";
 import userRepository from "@/repositories/users-repository";
 import capitalizeAllAndUnderscore from "@/utils/capitalizeAllAndUnderscore";
@@ -10,7 +11,7 @@ import { ArtistPage, Genre, Type } from "@prisma/client";
 
 async function findNearestLimited(
   lat: number,
-  lng: number
+  lng: number,
 ): Promise<ArtistCard[]> {
   validateLatLng(lat, lng);
   const nearestArtists = await artistsRepository.findNearestLimited(lat, lng);
@@ -64,6 +65,14 @@ async function findById(id: string): Promise<ArtistPage> {
   return artist;
 }
 
+async function findByUserId(userId: string): Promise<ArtistPage> {
+  const artist = await artistsRepository.findByUserId(userId);
+  if (!artist) {
+    throw notFoundError();
+  }
+  return artist;
+}
+
 async function post(data: CreateArtistParams) {
   await validateUserExistsAndHasArtistOrFail(data.userId);
   validateLatLng(data.location.coordinates[1], data.location.coordinates[0]);
@@ -74,9 +83,20 @@ async function post(data: CreateArtistParams) {
   data.type = capitalizeAllAndUnderscore(data.type) as Type;
 
   const createdArtist = await artistsRepository.create(data);
-  await userRepository.updateHasArtist(data.userId);
+  await userRepository.updateHasArtist(data.userId, true);
 
   return createdArtist;
+}
+
+async function deleteOne(artistId: string, userId: string) {
+  const artist = await artistsRepository.findById(artistId);
+  if (!artist) throw notFoundError();
+  if (artist.userId !== userId) {
+    throw unauthorizedError();
+  }
+
+  await userRepository.updateHasArtist(userId, false);
+  return await artistsRepository.deleteArtist(artistId);
 }
 
 async function validateUserExistsAndHasArtistOrFail(userId: string) {
@@ -99,7 +119,9 @@ const artistsService = {
   findNearestFiltered,
   findAllNearest,
   findById,
+  findByUserId,
   post,
+  deleteOne,
 };
 
 export default artistsService;

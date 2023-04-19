@@ -40,10 +40,10 @@ async function create(params: CreateUserParams) {
   });
 }
 
-async function updateHasArtist(id: string) {
+async function updateHasArtist(id: string, value: boolean) {
   return await prisma.user.update({
     data: {
-      hasArtistPage: true,
+      hasArtistPage: value,
     },
     where: {
       id,
