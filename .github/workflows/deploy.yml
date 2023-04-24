@@ -1,0 +1,25 @@
+name: Build and deploy
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: self-hosted
+    timeout-minutes: 10
+    steps:
+      - name: checkout
+        uses: action/checkout@v3
+      - name: create env file
+        uses: SpicyPizza/create-envfile@v1.3.1
+        with:
+          envkey_PORT: ${{secrets.PORT}}
+          envkey_MONGO_URI: ${{secrets.MONGO_URI}}
+          envkey_MONGO_URI_PRISMA: ${{secrets.MONGO_URI_PRISMA}}
+          envkey_JWT_SECRET: ${{secrets.JWT_SECRET}}
+          file_name: .env
+          fail_on_empty: true
+      - name: build
+        run: docker compose build
+      - name: run
+        run: docker compose down && docker compose up -d
