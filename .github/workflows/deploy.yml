@@ -23,4 +23,3 @@ jobs:
         run: docker compose build
       - name: run
         run: docker compose down && docker compose up -d
-        
