@@ -2,15 +2,15 @@ on:
   push:
     branches:
       - main
-name: Build and deploy
+name: Build and Deploy Back-end on AWS
 jobs:
   build:
     runs-on: self-hosted
     timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: action/checkout@v3
-      - name: Create env file
+        uses: actions/checkout@v3
+      - name: Create back-end env file
         uses: SpicyPizza/create-envfile@v1.3.1
         with:
           envkey_PORT: ${{secrets.PORT}}
