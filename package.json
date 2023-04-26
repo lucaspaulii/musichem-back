@@ -28,7 +28,8 @@
     "http-status": "^1.6.2",
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^5.2.0",
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "tsc-alias": "^1.8.5"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
