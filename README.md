@@ -9,7 +9,7 @@ Use npm to install the dependencies required before running the project.
 ```bash
 npm i
 ```
-Configure your .evn file as the example:
+Configure your .env file as the example:
 ```bash
 MONGO_URI=MONGO_DB_URI
 MONGO_URI_PRISMA=MONGO_DB_URI
